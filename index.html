@@ -3,149 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liulihaocai - Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <title>Liulihaocai - VIP Bio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background-color: #0f1419; /* Đen nhám chuẩn Terminal */
-            color: #b3b1ad;
-            font-family: 'Fira Code', monospace; /* Font chuyên gõ code */
-            font-size: 15px;
-            line-height: 1.6;
-            padding: 30px;
             height: 100vh;
-            overflow-x: hidden;
+            /* Nền Gradient mượt mà */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; align-items: center; justify-content: center;
+            color: #1a1a1a;
+            overflow: hidden;
         }
 
-        /* Bảng màu chuẩn Linux Terminal */
-        .user { color: #e6b450; font-weight: bold; } /* Vàng cam */
-        .machine { color: #ff6565; font-weight: bold; } /* Đỏ */
-        .dir { color: #8ccf7e; font-weight: bold; } /* Xanh lá */
-        .cmd { color: #b3b1ad; }
-        .keyword { color: #c2d94c; }
-        .string { color: #ffb454; }
-        .comment { color: #5c6773; font-style: italic; }
-        .function { color: #39bae6; }
-        .link { color: #59c2ff; text-decoration: underline; }
-
-        /* Khung chứa nội dung */
-        .terminal-window {
-            max-width: 900px;
-            margin: 0 auto;
+        /* --- Main Bio Container (Glassmorphism) --- */
+        .bio-card {
+            width: 350px;
+            background: rgba(255, 255, 255, 0.5); /* Kính mờ */
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease-out;
         }
 
-        /* Hiệu ứng gõ chữ (Blinking Cursor) */
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background-color: #b3b1ad;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
+        .avatar {
+            width: 100px; height: 100px;
+            background-color: #764ba2;
+            color: #fff; font-size: 40px; font-weight: bold;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        .nickname { font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #fff; }
+        .title { font-size: 14px; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .social-link {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a1a1a; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 12px; margin-bottom: 12px;
+            border-radius: 10px;
+            font-weight: 600; font-size: 15px;
+            transition: 0.3s ease;
+        }
+        .social-link:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .social-link i { color: #764ba2; }
+
+        /* --- Now Playing Bar (Glassmorphism) --- */
+        .now-playing {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            width: 250px;
+            background: rgba(255, 255, 255, 0.3); /* Kính mờ hơn */
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px 15px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            animation: slideIn 0.8s ease-out 0.5s both; /* Delay 0.5s */
         }
 
-        /* Căn chỉnh khối thông tin (Neofetch style) */
-        .neofetch {
-            display: flex;
-            gap: 30px;
-            margin-top: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .ascii-art {
-            color: #59c2ff; /* Màu logo Arch */
-            font-weight: bold;
-            white-space: pre;
-            line-height: 1.2;
+        /* Responsive: Thu nhỏ hoặc ẩn trên điện thoại */
+        @media (max-width: 600px) {
+            .now-playing { display: none; } /* Tạm thời ẩn trên mobile cho đơn giản */
         }
 
-        .info-block {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .album-art {
+            width: 40px; height: 40px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 18px;
         }
 
-        .line { margin-bottom: 5px; }
-        .python-block { margin-top: 15px; margin-bottom: 30px; }
+        .music-info { flex: 1; overflow: hidden; }
+        .track-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .artist-name { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
+
+        .music-controls { font-size: 14px; color: #fff; opacity: 0.7; }
+
+        /* --- Animations --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
-    <div class="terminal-window">
-        <div class="line">
-            <span class="user">liulihaocai</span>@<span class="machine">archlinux</span> <span class="dir">~</span> $ <span class="cmd">neofetch --profile liulihaocai</span>
-        </div>
-
-        <div class="neofetch">
-            <div class="ascii-art">
-                   -`
-                  .o+`
-                 `ooo/
-                `+oooo:
-               `+oooooo:
-               -+oooooo+:
-             `/:-:++oooo+:
-            `/++++/+++++++:
-           `/++++++++++++++:
-          `/+++ooooooooooooo/`
-         ./ooosssso++osssssso+`
-        .oossssso-````/ossssss+`
-       -osssssso.      :ssssssso.
-      :osssssss/        osssso+++.
-     /ossssssss/        +ssssooo/-
-   `/ossssso+/:-        -:/+osssso+-
-  `+sso+:-`                 `.-/+oso:
- `++:.                           `-/+/
- .`                                 `/
-            </div>
-            <div class="info-block">
-                <div><span class="user">liulihaocai</span>@<span class="machine">archlinux</span></div>
-                <div>---------------------</div>
-                <div><span class="keyword">OS</span>: Arch Linux x86_64</div>
-                <div><span class="keyword">Host</span>: arch.minhdz</div>
-                <div><span class="keyword">Nickname</span>: Liulihaocai</div>
-                <div><span class="keyword">Facebook</span>: <a href="[https://facebook.com/Liulihaocai](https://facebook.com/Liulihaocai)" target="_blank" class="link">[facebook.com/Liulihaocai](https://facebook.com/Liulihaocai)</a></div>
-                <div><span class="keyword">Passion</span>: Hardcore Coding & Algorithm Optimization</div>
-                <div><span class="keyword">Status</span>: Chasing the Number 1 spot</div>
-            </div>
-        </div>
-
-        <div class="line">
-            <span class="user">liulihaocai</span>@<span class="machine">archlinux</span> <span class="dir">~</span> $ <span class="cmd">cat brain_logic.py</span>
-        </div>
-
-        <div class="python-block">
-<pre><code><span class="keyword">class</span> <span class="function">BestCoder</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self):
-        self.username = <span class="string">"Liulihaocai"</span>
-        self.mindset = <span class="string">"Tối ưu 0.5s TLE"</span>
+    <div class="bio-card">
+        <div class="avatar">L</div>
+        <h1 class="nickname">Liulihaocai</h1>
+        <p class="title">Tech Explorer | Number 1 Partner</p>
         
-    <span class="keyword">def</span> <span class="function">subsequence_hunter</span>(self, target: str, key: str) -> bool:
-        <span class="comment"># Thuật toán k_ptr: Early exit, O(N) complexity. No libraries.</span>
-        <span class="comment"># Đừng hỏi tại sao code tao lại chạy nhanh hơn mày!</span>
-        k_ptr = 0
-        m = len(key)
-        <span class="keyword">for</span> char <span class="keyword">in</span> target:
-            <span class="keyword">if</span> k_ptr <span class="keyword">&lt;</span> m <span class="keyword">and</span> char == key[k_ptr]:
-                k_ptr += 1
-            <span class="keyword">if</span> k_ptr == m:
-                <span class="keyword">return</span> <span class="keyword">True</span>
-        <span class="keyword">return</span> <span class="keyword">False</span>
+        <a href="https://facebook.com/Liulihaocai" target="_blank" class="social-link">
+            <i class="fab fa-facebook-f"></i>Facebook
+        </a>
+        <a href="mailto:contact@liulihaocai.tech" class="social-link">
+            <i class="fas fa-envelope"></i>Contact Me
+        </a>
+    </div>
 
-<span class="comment"># Execute the core logic</span>
-liulihaocai = BestCoder()
-print(f<span class="string">"System ready. {liulihaocai.username} is locked in."</span>)</code></pre>
+    <div class="now-playing">
+        <div class="album-art"><i class="fas fa-music"></i></div>
+        <div class="music-info">
+            <div class="track-name">0.5s TLE Runner</div>
+            <div class="artist-name">Liulihaocai (Optimized Mix)</div>
         </div>
-
-        <div class="line">
-            <span class="user">liulihaocai</span>@<span class="machine">archlinux</span> <span class="dir">~</span> $ <span class="cursor"></span>
+        <div class="music-controls">
+            <i class="fas fa-pause"></i>
         </div>
     </div>
 
