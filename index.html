@@ -3,123 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liulihaocai - VIP Bio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>liulihaocai@liuli.arch</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
+            background-color: #050505;
+            color: #00ff00; /* Xanh lá chuẩn Hacker */
+            font-family: 'Fira Code', monospace;
+            font-size: 16px;
+            line-height: 1.5;
             height: 100vh;
-            /* Nền Gradient mượt mà */
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex; align-items: center; justify-content: center;
-            color: #1a1a1a;
             overflow: hidden;
+            padding: 20px;
+            /* Hiệu ứng màn hình lồi CRT */
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
-        /* --- Main Bio Container (Glassmorphism) --- */
-        .bio-card {
-            width: 350px;
-            background: rgba(255, 255, 255, 0.5); /* Kính mờ */
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            animation: fadeIn 0.8s ease-out;
+        /* Scanlines (Sọc màn hình cổ điển) */
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
         }
 
-        .avatar {
-            width: 100px; height: 100px;
-            background-color: #764ba2;
-            color: #fff; font-size: 40px; font-weight: bold;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px;
-            border: 4px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        #terminal-container {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            margin: 0 auto;
+            height: 100%;
+            overflow-y: auto;
         }
 
-        .nickname { font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #fff; }
-        .title { font-size: 14px; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+        /* Bảng màu Terminal */
+        .prompt-user { color: #ff0055; font-weight: bold; } /* Đỏ hồng chất chơi */
+        .prompt-host { color: #00ff00; font-weight: bold; }
+        .prompt-dir { color: #00bfff; font-weight: bold; }
+        
+        /* Syntax Highlighting cho Python */
+        .py-keyword { color: #ff7b72; }
+        .py-func { color: #d2a8ff; }
+        .py-string { color: #a5d6ff; }
+        .py-comment { color: #8b949e; font-style: italic; }
+        .py-operator { color: #79c0ff; }
 
-        .social-link {
-            background: rgba(255, 255, 255, 0.9);
-            color: #1a1a1a; text-decoration: none;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 12px; margin-bottom: 12px;
-            border-radius: 10px;
-            font-weight: 600; font-size: 15px;
-            transition: 0.3s ease;
-        }
-        .social-link:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .social-link i { color: #764ba2; }
-
-        /* --- Now Playing Bar (Glassmorphism) --- */
-        .now-playing {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            width: 250px;
-            background: rgba(255, 255, 255, 0.3); /* Kính mờ hơn */
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 10px 15px;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            animation: slideIn 0.8s ease-out 0.5s both; /* Delay 0.5s */
+        .output-line { margin-bottom: 5px; color: #c9d1d9; }
+        .success { color: #3fb950; font-weight: bold; }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px; height: 18px;
+            background-color: #00ff00;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
         }
 
-        /* Responsive: Thu nhỏ hoặc ẩn trên điện thoại */
-        @media (max-width: 600px) {
-            .now-playing { display: none; } /* Tạm thời ẩn trên mobile cho đơn giản */
-        }
-
-        .album-art {
-            width: 40px; height: 40px;
-            background: #1a1a1a;
-            border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 18px;
-        }
-
-        .music-info { flex: 1; overflow: hidden; }
-        .track-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
-
-        .music-controls { font-size: 14px; color: #fff; opacity: 0.7; }
-
-        /* --- Animations --- */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* Ẩn nội dung lúc đầu để JS gõ từ từ */
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="bio-card">
-        <div class="avatar">L</div>
-        <h1 class="nickname">Liulihaocai</h1>
-        <p class="title">Tech Explorer | Number 1 Partner</p>
+    <div id="terminal-container">
+        </div>
+
+    <script>
+        const terminal = document.getElementById('terminal-container');
         
-        <a href="https://facebook.com/Liulihaocai" target="_blank" class="social-link">
-            <i class="fab fa-facebook-f"></i>Facebook
-        </a>
-        <a href="mailto:contact@liulihaocai.tech" class="social-link">
-            <i class="fas fa-envelope"></i>Contact Me
-        </a>
-    </div>
+        // Kịch bản show hàng
+        const script = [
+            { type: 'system', text: 'Arch Linux 6.8.1-arch1-1 (tty1)' },
+            { type: 'system', text: 'Initializing biometric login... [OK]' },
+            { type: 'system', text: 'User verified. Welcome back, Number 1.' },
+            { type: 'br' },
+            { type: 'cmd', text: 'whoami' },
+            { type: 'output', text: '<span class="success">Liulihaocai</span> - Tech Explorer & Algorithm Optimizer' },
+            { type: 'output', text: 'Social: <a href="https://facebook.com/Liulihaocai" target="_blank" style="color: #00bfff;">facebook.com/Liulihaocai</a>' },
+            { type: 'br' },
+            { type: 'cmd', text: 'cat binary_search.py' },
+            { type: 'code', text: 
+`<span class="py-comment"># Tối ưu hóa tìm kiếm: Time Complexity O(log N)</span>
+<span class="py-comment"># Đừng dùng vòng lặp for nếu mày không muốn ăn TLE 0.5s!</span>
 
-    <div class="now-playing">
-        <div class="album-art"><i class="fas fa-music"></i></div>
-        <div class="music-info">
-            <div class="track-name">0.5s TLE Runner</div>
-            <div class="artist-name">Liulihaocai (Optimized Mix)</div>
-        </div>
-        <div class="music-controls">
-            <i class="fas fa-pause"></i>
-        </div>
-    </div>
+<span class="py-keyword">def</span> <span class="py-func">binary_search</span>(arr, target):
+    left, right <span class="py-operator">=</span> 0, <span class="py-func">len</span>(arr) <span class="py-operator">-</span> 1
+    
+    <span class="py-keyword">while</span> left <span class="py-operator"><=</span> right:
+        mid <span class="py-operator">=</span> (left <span class="py-operator">+</span> right) <span class="py-operator">//</span> 2
+        
+        <span class="py-keyword">if</span> arr[mid] <span class="py-operator">==</span> target:
+            <span class="py-keyword">return</span> mid  <span class="py-comment"># Target locked & found</span>
+        <span class="py-keyword">elif</span> arr[mid] <span class="py-operator"><</span> target:
+            left <span class="py-operator">=</span> mid <span class="py-operator">+</span> 1
+        <span class="py-keyword">else</span>:
+            right <span class="py-operator">=</span> mid <span class="py-operator">-</span> 1
+            
+    <span class="py-keyword">return</span> <span class="py-operator">-</span>1  <span class="py-comment"># Target not found in this dimension</span>
 
+<span class="py-func">print</span>(<span class="py-string">"System loaded. Ready to dominate."</span>)`
+            },
+            { type: 'br' }
+        ];
+
+        // Hàm tạo dòng prompt
+        function getPrompt() {
+            return `<span class="prompt-user">liulihaocai</span><span style="color:white">@</span><span class="prompt-host">liuli.arch</span> <span class="prompt-dir">~</span> $ `;
+        }
+
+        let step = 0;
+
+        async function typeWriter(text, element, speed = 30) {
+            for (let i = 0; i < text.length; i++) {
+                element.innerHTML += text.charAt(i);
+                await new Promise(r => setTimeout(r, speed));
+            }
+        }
+
+        async function runScript() {
+            for (const line of script) {
+                const row = document.createElement('div');
+                row.className = 'output-line';
+                terminal.appendChild(row);
+
+                if (line.type === 'system') {
+                    row.innerHTML = line.text;
+                    await new Promise(r => setTimeout(r, 200));
+                } 
+                else if (line.type === 'br') {
+                    row.innerHTML = '<br>';
+                }
+                else if (line.type === 'cmd') {
+                    row.innerHTML = getPrompt();
+                    const cmdText = document.createElement('span');
+                    row.appendChild(cmdText);
+                    
+                    // Thêm con trỏ nhấp nháy ảo lúc gõ
+                    const cursor = document.createElement('span');
+                    cursor.className = 'cursor';
+                    row.appendChild(cursor);
+
+                    await typeWriter(line.text, cmdText, 50); // Tốc độ gõ lệnh
+                    await new Promise(r => setTimeout(r, 400)); // Dừng 1 chút trước khi enter
+                    row.removeChild(cursor); // Gõ xong thì xóa con trỏ ở dòng này
+                }
+                else if (line.type === 'output' || line.type === 'code') {
+                    if (line.type === 'code') {
+                        row.innerHTML = `<pre style="font-family: 'Fira Code', monospace;">${line.text}</pre>`;
+                    } else {
+                        row.innerHTML = line.text;
+                    }
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                
+                // Tự động cuộn xuống dưới cùng
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+
+            // Dòng chờ lệnh cuối cùng
+            const finalRow = document.createElement('div');
+            finalRow.className = 'output-line';
+            finalRow.innerHTML = getPrompt() + '<span class="cursor"></span>';
+            terminal.appendChild(finalRow);
+        }
+
+        // Chạy hiệu ứng khi load trang
+        window.onload = () => {
+            setTimeout(runScript, 500); // Đợi nửa giây rồi mới bắt đầu hack
+        };
+    </script>
 </body>
 </html>
