@@ -3,183 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>liulihaocai@liuli.arch</title>
+    <title>Happy Birthday Egoist!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: #050505;
-            color: #00ff00; /* Xanh lá chuẩn Hacker */
-            font-family: 'Fira Code', monospace;
-            font-size: 16px;
-            line-height: 1.5;
-            height: 100vh;
-            overflow: hidden;
-            padding: 20px;
-            /* Hiệu ứng màn hình lồi CRT */
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        :root {
+            --muichiro-color: #50c878; /* Xanh bạc hà */
+            --rin-color: #00ffff; /* Xanh neon Blue Lock */
+            --bg-color: #0a0a0a;
         }
 
-        /* Scanlines (Sọc màn hình cổ điển) */
-        body::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        #terminal-container {
-            position: relative;
-            z-index: 3;
-            max-width: 900px;
-            margin: 0 auto;
+        /* Hiệu ứng sương mù */
+        .mist-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            overflow-y: auto;
+            pointer-events: none;
+            background: url('https://www.transparenttextures.com/patterns/fog.png');
+            opacity: 0.3;
+            z-index: 10;
         }
 
-        /* Bảng màu Terminal */
-        .prompt-user { color: #ff0055; font-weight: bold; } /* Đỏ hồng chất chơi */
-        .prompt-host { color: #00ff00; font-weight: bold; }
-        .prompt-dir { color: #00bfff; font-weight: bold; }
-        
-        /* Syntax Highlighting cho Python */
-        .py-keyword { color: #ff7b72; }
-        .py-func { color: #d2a8ff; }
-        .py-string { color: #a5d6ff; }
-        .py-comment { color: #8b949e; font-style: italic; }
-        .py-operator { color: #79c0ff; }
-
-        .output-line { margin-bottom: 5px; color: #c9d1d9; }
-        .success { color: #3fb950; font-weight: bold; }
-        
-        .cursor {
-            display: inline-block;
-            width: 10px; height: 18px;
-            background-color: #00ff00;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
         }
 
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        
-        /* Ẩn nội dung lúc đầu để JS gõ từ từ */
-        .hidden { display: none; }
+        /* Section 1: Muichiro */
+        #muichiro-part {
+            background: linear-gradient(to bottom, #0a0a0a, #1a2e25);
+        }
+
+        .cloud-text {
+            font-size: 1.5rem;
+            color: var(--muichiro-color);
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        /* Section 2: Rin Itoshi */
+        #rin-part {
+            background: radial-gradient(circle, #111, #000);
+            border-top: 2px solid var(--rin-color);
+        }
+
+        .ego-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            text-transform: uppercase;
+            color: var(--rin-color);
+            text-shadow: 0 0 20px var(--rin-color);
+            margin: 0;
+        }
+
+        .hexagon {
+            width: 100px;
+            height: 115px;
+            background-color: var(--rin-color);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        /* Lời chúc */
+        .message-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid var(--muichiro-color);
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        .btn-ego {
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid var(--rin-color);
+            color: var(--rin-color);
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .btn-ego:hover {
+            background: var(--rin-color);
+            color: black;
+            box-shadow: 0 0 30px var(--rin-color);
+        }
+
+        h1 { margin: 10px 0; }
+        p { line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <div id="terminal-container">
+    <div class="mist-container"></div>
+
+    <section id="muichiro-part">
+        <p class="cloud-text">"Đám mây kia hình gì nhỉ... Tao quên mất rồi."</p>
+        <h1 style="color: var(--muichiro-color);">Nhưng tao nhớ hôm nay là sinh nhật mày!</h1>
+        <p>Hello Ly, Trụ cột Sương mù có lời muốn nói...</p>
+        <div style="font-size: 5rem;">🌫️</div>
+        <p>Cuộn xuống để xem Sương mù nói cái gì đi :)</p>
+    </section>
+
+    <section id="rin-part">
+        <div class="hexagon">
+            <span style="color: black; font-weight: bold;">EGO</span>
+        </div>
+        <p style="color: #aaa; letter-spacing: 5px;">BLUE LOCK PROJECT</p>
+        <h2 class="ego-text">HAPPY BIRTHDAY!</h2>
+        
+        <div class="message-box">
+            <p>"Đừng có sống một cách hời hợt (lukewarm) như thế. Hôm nay là ngày của mày, hãy thống trị sân khấu này bằng cái tôi của chính mình." - <b>Rin Itoshi</b></p>
+            <hr style="border: 0.5px solid #333;">
+            <p>Chúc mừng sinh nhật mày! Tuổi mới chúc mày xinh đẹp, học giỏi!</p>
         </div>
 
-    <script>
-        const terminal = document.getElementById('terminal-container');
+        <button class="btn-ego" onclick="alert(':3')">SECRET?</button>
         
-        // Kịch bản show hàng
-        const script = [
-            { type: 'system', text: 'Arch Linux 6.8.1-arch1-1 (tty1)' },
-            { type: 'system', text: 'Initializing biometric login... [OK]' },
-            { type: 'system', text: 'User verified. Welcome back, Number 1.' },
-            { type: 'br' },
-            { type: 'cmd', text: 'whoami' },
-            { type: 'output', text: '<span class="success">Liulihaocai</span> - Tech Explorer & Algorithm Optimizer' },
-            { type: 'output', text: 'Social: <a href="https://facebook.com/Liulihaocai" target="_blank" style="color: #00bfff;">facebook.com/Liulihaocai</a>' },
-            { type: 'br' },
-            { type: 'cmd', text: 'cat binary_search.py' },
-            { type: 'code', text: 
-`<span class="py-comment"># Tối ưu hóa tìm kiếm: Time Complexity O(log N)</span>
-<span class="py-comment"># Đừng dùng vòng lặp for nếu mày không muốn ăn TLE 0.5s!</span>
+        <p style="margin-top: 50px; font-size: 0.8rem; opacity: 0.5;">From Minh with ⚡</p>
+    </section>
 
-<span class="py-keyword">def</span> <span class="py-func">binary_search</span>(arr, target):
-    left, right <span class="py-operator">=</span> 0, <span class="py-func">len</span>(arr) <span class="py-operator">-</span> 1
-    
-    <span class="py-keyword">while</span> left <span class="py-operator"><=</span> right:
-        mid <span class="py-operator">=</span> (left <span class="py-operator">+</span> right) <span class="py-operator">//</span> 2
-        
-        <span class="py-keyword">if</span> arr[mid] <span class="py-operator">==</span> target:
-            <span class="py-keyword">return</span> mid  <span class="py-comment"># Target locked & found</span>
-        <span class="py-keyword">elif</span> arr[mid] <span class="py-operator"><</span> target:
-            left <span class="py-operator">=</span> mid <span class="py-operator">+</span> 1
-        <span class="py-keyword">else</span>:
-            right <span class="py-operator">=</span> mid <span class="py-operator">-</span> 1
-            
-    <span class="py-keyword">return</span> <span class="py-operator">-</span>1  <span class="py-comment"># Target not found in this dimension</span>
-
-<span class="py-func">print</span>(<span class="py-string">"System loaded. Ready to dominate."</span>)`
-            },
-            { type: 'br' }
-        ];
-
-        // Hàm tạo dòng prompt
-        function getPrompt() {
-            return `<span class="prompt-user">liulihaocai</span><span style="color:white">@</span><span class="prompt-host">liuli.arch</span> <span class="prompt-dir">~</span> $ `;
-        }
-
-        let step = 0;
-
-        async function typeWriter(text, element, speed = 30) {
-            for (let i = 0; i < text.length; i++) {
-                element.innerHTML += text.charAt(i);
-                await new Promise(r => setTimeout(r, speed));
-            }
-        }
-
-        async function runScript() {
-            for (const line of script) {
-                const row = document.createElement('div');
-                row.className = 'output-line';
-                terminal.appendChild(row);
-
-                if (line.type === 'system') {
-                    row.innerHTML = line.text;
-                    await new Promise(r => setTimeout(r, 200));
-                } 
-                else if (line.type === 'br') {
-                    row.innerHTML = '<br>';
-                }
-                else if (line.type === 'cmd') {
-                    row.innerHTML = getPrompt();
-                    const cmdText = document.createElement('span');
-                    row.appendChild(cmdText);
-                    
-                    // Thêm con trỏ nhấp nháy ảo lúc gõ
-                    const cursor = document.createElement('span');
-                    cursor.className = 'cursor';
-                    row.appendChild(cursor);
-
-                    await typeWriter(line.text, cmdText, 50); // Tốc độ gõ lệnh
-                    await new Promise(r => setTimeout(r, 400)); // Dừng 1 chút trước khi enter
-                    row.removeChild(cursor); // Gõ xong thì xóa con trỏ ở dòng này
-                }
-                else if (line.type === 'output' || line.type === 'code') {
-                    if (line.type === 'code') {
-                        row.innerHTML = `<pre style="font-family: 'Fira Code', monospace;">${line.text}</pre>`;
-                    } else {
-                        row.innerHTML = line.text;
-                    }
-                    await new Promise(r => setTimeout(r, 100));
-                }
-                
-                // Tự động cuộn xuống dưới cùng
-                window.scrollTo(0, document.body.scrollHeight);
-            }
-
-            // Dòng chờ lệnh cuối cùng
-            const finalRow = document.createElement('div');
-            finalRow.className = 'output-line';
-            finalRow.innerHTML = getPrompt() + '<span class="cursor"></span>';
-            terminal.appendChild(finalRow);
-        }
-
-        // Chạy hiệu ứng khi load trang
-        window.onload = () => {
-            setTimeout(runScript, 500); // Đợi nửa giây rồi mới bắt đầu hack
-        };
-    </script>
 </body>
 </html>
